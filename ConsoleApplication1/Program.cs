@@ -12,7 +12,8 @@ namespace ProjectEulerMain
 
         public static void Main(string[] args)
         {
-            Console.WindowHeight = 48;
+            Console.WindowHeight = 52;
+
             int identifier = 0;
             do
             {
@@ -41,7 +42,7 @@ namespace ProjectEulerMain
             //TODO: Could cause problems if found type does not inherit from IProblem...
             IProblem problem = (IProblem)Activator.CreateInstance(t);
 
-
+            
             //Load XML summary document and search for a node with the chosen problem
             XmlDocument summary = new XmlDocument();
             summary.Load(XMLSUMMARYFILE);
