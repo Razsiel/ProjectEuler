@@ -2,19 +2,20 @@
 using System.Reflection;
 using System.IO;
 using System.Xml;
-using Utilities;
+using Razsiel.Utilities;
 
 namespace ProjectEulerMain
 {
     public class Program
     {
-        const string XMLSUMMARYFILE = "..\\..\\Xml\\ProblemSummary.xml";
+        const string BASEPATH = "..\\..\\";
+        const string XMLSUMMARYFILE = BASEPATH + "Xml\\ProblemSummary.xml";
 
         public static void Main(string[] args)
         {
             Console.WindowHeight = 52;
 
-            int identifier = 0;
+            uint identifier = 0;
             do
             {
                 Console.Clear();
@@ -26,7 +27,7 @@ namespace ProjectEulerMain
                 Console.WriteLine();
                 Console.Write("Please input a number (1-522) to pick a problem: ");
             } 
-            while ( !int.TryParse(Console.ReadLine(), out identifier) );
+            while ( !uint.TryParse(Console.ReadLine(), out identifier));
 
             Console.WriteLine();
             string problemName = "Problem" + identifier;
@@ -42,7 +43,6 @@ namespace ProjectEulerMain
             //TODO: Could cause problems if found type does not inherit from IProblem...
             IProblem problem = (IProblem)Activator.CreateInstance(t);
 
-            
             //Load XML summary document and search for a node with the chosen problem
             XmlDocument summary = new XmlDocument();
             summary.Load(XMLSUMMARYFILE);
@@ -51,10 +51,11 @@ namespace ProjectEulerMain
             Console.WriteLine(string.Format("({0})", problemName));
 
             if (node != null)
-                Console.WriteLine(node.InnerText);
+                ConsoleUtil.WriteAllLines(node.InnerText.Trim().Wrap(Console.BufferWidth - 2));
             else
-                Console.WriteLine("Summary not found!");
+                Console.WriteLine("Summary not found!\n");
 
+            Console.WriteLine();
             Console.WriteLine("<Solution>");
             Console.ForegroundColor = ConsoleColor.White;
             
